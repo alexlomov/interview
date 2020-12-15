@@ -128,5 +128,14 @@ I can foresee:
 Revisit this section after the `MessageParser` implementation.
 
 ## Parser
-I'm used to Circe for handling JSON, so I'll go with it. 
+* I'm used to Circe for handling JSON, so I'll go with it.
+* It is quite unhandy to test something with a File as input, so the implementation of `MessageParser` consists of tiny flat-mappable steps
+* `parseBic` might look weird, but it is the way to guarantee we do not mismatch sender and receiver while wrangling BICs.
+
+Revisited parsing errors:
+* `UnsupportedMessageType` if `messageType` differs from `MT103` and `MT202`
+* `ParseFailure` if the file content can't be converted to JSON
+* `MissingField` as above: missing mandatory field in JSON message
+* `FieldFormatFailure` when the field doesn't meet criteria
+* `LoadFailure` if we cannot load the file content as a string
 
