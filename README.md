@@ -87,3 +87,46 @@ Good luck!
 
 #### Sources
 This README is based of the wonderful README.md from Paidy's interview exercise.
+
+# Implementation notes
+
+## Handling incoming message files
+### MT103
+* 33B—Currency/Instructed Amount
+  * Mandatory
+  * Conforms to ISO 4217 or fails with T52.
+  * Validates to at least one integer digit, comma and trailing fraction. Given vague (Error code(s): C03, T40, T43) in the spec we'll skip this validation. BigDecimal is good enough.
+* 50A—Ordering Customer
+  * Mandatory, but missing in the domain model
+  * This field specifies the customer ordering the transaction. 
+* 51A—Sending Institution
+  * Optional, but is mandatory in the domain model
+  * Though it 
+* 57A—Account with Instruction
+  * The presence is conditional, so optional in terms if input parsing. But is mandatory in the domain model
+* 59A—Beneficiary Customer
+  * Mandatory, but is absent in the domain model 
+  
+### MT202
+* 32A—Value Date/Currency/Amount
+  * Mandatory
+  * The test data lack Value Date part, so let it be like that
+* 52A—Ordering institution
+  * Optional, but is mandatory in the data model.
+* 58A—Beneficiary Institution
+  * Mandatory and mandatory in the domain model
+  
+Given the aforementioned and the contents of the MT103- and MT202-like files I'll map BICs of the messages to
+`sender` and `receiver` fields of the `FinancialMessage` class respectively and treat all of them mandatory including 
+the `amount`. Thus abcense of any of those attributes in the file messages is treated as an error in the domain.
+
+## Errors in the domain:
+I can foresee:
+* Invalid field format
+* Missing expected field
+
+Revisit this section after the `MessageParser` implementation.
+
+## Parser
+I'm used to Circe for handling JSON, so I'll go with it. 
+
