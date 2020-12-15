@@ -5,7 +5,7 @@ object Dependencies {
   object Versions {
     val akka = "2.6.10"
     val cats = "2.3.0"
-    val circe = "0.11.1"
+    val circe = "0.13.0"
     val enumeratum = "1.6.1"
     val pureConfig = "0.14.0"
 
@@ -23,9 +23,12 @@ object Dependencies {
     def akka(artifact: String): ModuleID = "com.typesafe.akka" %% artifact % Versions.akka
 
     lazy val akkaStream = akka("akka-stream")
-    lazy val cats = "org.typelevel"               %% "cats-core"  % Versions.cats
-    lazy val enumeratum = "com.beachape"          %% "enumeratum" % Versions.enumeratum
-    lazy val pureConfig = "com.github.pureconfig" %% "pureconfig" % Versions.pureConfig
+    lazy val cats = "org.typelevel"               %% "cats-core"     % Versions.cats
+    lazy val enumeratum = "com.beachape"          %% "enumeratum"    % Versions.enumeratum
+    lazy val pureConfig = "com.github.pureconfig" %% "pureconfig"    % Versions.pureConfig
+    lazy val circeCore = "io.circe"               %% "circe-core"    % Versions.circe
+    lazy val circeParser = "io.circe"             %% "circe-parser"  % Versions.circe
+    lazy val circeLiteral = "io.circe"            %% "circe-literal" % Versions.circe
 
     // Runtime
     lazy val logback = "ch.qos.logback" % "logback-classic" % Versions.logback
