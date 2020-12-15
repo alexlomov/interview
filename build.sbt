@@ -18,7 +18,8 @@ libraryDependencies ++= Seq(
   Libraries.quicklens               % Test,
   Libraries.scalaCheck              % Test,
   Libraries.scalaTest               % Test,
-  Libraries.scalaTestPlusScalaCheck % Test
+  Libraries.scalaTestPlusScalaCheck % Test,
+  Libraries.circeLiteral            % Test
 )
 
 addCommandAlias("update", ";dependencyUpdates; reload plugins; dependencyUpdates; reload return")
