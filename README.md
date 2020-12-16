@@ -120,14 +120,14 @@ Given the aforementioned and the contents of the MT103- and MT202-like files I'l
 `sender` and `receiver` fields of the `FinancialMessage` class respectively and treat all of them mandatory including 
 the `amount`. Thus abcense of any of those attributes in the file messages is treated as an error in the domain.
 
-## Errors in the domain:
+### Errors in the domain:
 I can foresee:
 * Invalid field format
 * Missing expected field
 
 Revisit this section after the `MessageParser` implementation.
 
-## Parser
+### Parser
 * I'm used to Circe for handling JSON, so I'll go with it.
 * It is quite unhandy to test something with a File as input, so the implementation of `MessageParser` consists of tiny flat-mappable steps
 * `parseBic` might look weird, but it is the way to guarantee we do not mismatch sender and receiver while wrangling BICs.
@@ -138,4 +138,11 @@ Revisited parsing errors:
 * `MissingField` as above: missing mandatory field in JSON message
 * `FieldFormatFailure` when the field doesn't meet criteria
 * `LoadFailure` if we cannot load the file content as a string
+
+## Fraud Client
+### Design
+FraudClient implementation is not a big deal: it is provided with a function from `FinancialMessage` to a
+`Future[Either[api.Error, api.domain.Result]]` which is easy to adopt by our client domain.
+Plus there comes an extra client error type `ClientFailure` to denote client side failures such as execution context exceptions
+and so on.
 
