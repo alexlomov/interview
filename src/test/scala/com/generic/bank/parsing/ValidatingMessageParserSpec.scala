@@ -5,13 +5,13 @@ import cats.syntax.either._
 import org.scalatest.matchers.should
 import org.scalatest.funspec.AnyFunSpec
 import ValidatingMessageParser._
-import com.generic.bank.domain.{Bic, FinancialMessage}
+import com.generic.bank.domain.{ Bic, FinancialMessage }
 
 class ValidatingMessageParserSpec extends AnyFunSpec with should.Matchers {
 
   val Filename = "filename"
 
-  describe( "JSON parsing") {
+  describe("JSON parsing") {
 
     it("parses a well-formed JSON string into JSON") {
       val rawJson = """{
@@ -114,7 +114,7 @@ class ValidatingMessageParserSpec extends AnyFunSpec with should.Matchers {
         json.hcursor,
         AmountFieldCode("33B")
       ).leftMap(_(Filename)) shouldBe Right(
-          FinancialMessage.Amount(
+        FinancialMessage.Amount(
           FinancialMessage.Amount.Value(123),
           FinancialMessage.Amount.Currency.EUR
         )
@@ -183,7 +183,7 @@ class ValidatingMessageParserSpec extends AnyFunSpec with should.Matchers {
       ValidatingMessageParser.parseBic(
         json.hcursor,
         SenderFieldCode("51A")
-      )(FinancialMessage.SenderBic.apply).leftMap(_ (Filename)) shouldBe Right(
+      )(FinancialMessage.SenderBic.apply).leftMap(_(Filename)) shouldBe Right(
         FinancialMessage.SenderBic(Bic(senderBic))
       )
     }
@@ -206,7 +206,7 @@ class ValidatingMessageParserSpec extends AnyFunSpec with should.Matchers {
       ValidatingMessageParser.parseBic(
         json.hcursor,
         ReceiverFieldCode("57A")
-      )(FinancialMessage.ReceiverBic.apply).leftMap(_ (Filename)) shouldBe Right(
+      )(FinancialMessage.ReceiverBic.apply).leftMap(_(Filename)) shouldBe Right(
         FinancialMessage.ReceiverBic(Bic(receiverBic))
       )
     }
@@ -227,7 +227,7 @@ class ValidatingMessageParserSpec extends AnyFunSpec with should.Matchers {
       ValidatingMessageParser.parseBic(
         json.hcursor,
         SenderFieldCode("51A")
-      )(FinancialMessage.SenderBic.apply).leftMap(_ (Filename)) should matchPattern {
+      )(FinancialMessage.SenderBic.apply).leftMap(_(Filename)) should matchPattern {
         case Left(MissingField(`Filename`, "51A")) =>
       }
     }
@@ -248,12 +248,11 @@ class ValidatingMessageParserSpec extends AnyFunSpec with should.Matchers {
       ValidatingMessageParser.parseBic(
         json.hcursor,
         ReceiverFieldCode("57A")
-      )(FinancialMessage.ReceiverBic.apply).leftMap(_ (Filename)) should matchPattern {
+      )(FinancialMessage.ReceiverBic.apply).leftMap(_(Filename)) should matchPattern {
         case Left(MissingField(`Filename`, "57A")) =>
       }
     }
 
   }
-
 
 }
