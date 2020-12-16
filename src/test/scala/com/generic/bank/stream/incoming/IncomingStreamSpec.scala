@@ -16,7 +16,7 @@ class IncomingStreamSpec extends AnyWordSpec with Matchers with EitherValues {
 
     implicit val actorSystem: ActorSystem = actorSystemModule.actorSystem
 
-    "return a Source of Files" in {
+    "return a Source of Either of Files" in {
       val applicationConfig = ApplicationConfig(
         ApplicationConfig.MessageFolder("/messages")
       )
@@ -24,7 +24,7 @@ class IncomingStreamSpec extends AnyWordSpec with Matchers with EitherValues {
 
       val result = incomingStream.source()
 
-      val testSource = result.getOrElse(null).map(_.getName).runWith(TestSink.probe[String])
+      val testSource = result.map(_.getOrElse(null)).map(_.getName).runWith(TestSink.probe[String])
 
       testSource.request(6).expectNextUnorderedN(
         List(
@@ -47,7 +47,7 @@ class IncomingStreamSpec extends AnyWordSpec with Matchers with EitherValues {
 
       val result = incomingStream.source()
 
-      result.swap.getOrElse(null) shouldBe Error.DirectoryNotFound
+      result.map(_.swap.getOrElse(null)).runWith(TestSink.probe[Error]).requestNext() shouldBe Error.DirectoryNotFound
 
     }
   }

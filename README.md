@@ -146,3 +146,7 @@ FraudClient implementation is not a big deal: it is provided with a function fro
 Plus there comes an extra client error type `ClientFailure` to denote client side failures such as execution context exceptions
 and so on.
 
+## Runtime/Main implementation
+### Akka Streams are far away from being functionally idiomatic, I'll try to mimic binds chain and laziness.
+I'm taking responsibility of changing `Either[Error, Source[File, NotUsed]]` to `Source[Either[Error, File], NotUsed]`
+in the IncomingSource API. Looks more natural as s Source of multiple files.

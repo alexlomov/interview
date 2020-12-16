@@ -1,6 +1,6 @@
 package com.generic.bank.stream.incoming
 
-sealed trait Error
+sealed trait Error extends Product with Serializable
 
 object Error {
 
